@@ -1,7 +1,256 @@
-// NativeScript core theme
-// @see https://docs.nativescript.org/ui/theme
-@import '~nativescript-theme-core/scss/skins/grey/index';
-@import '~nativescript-theme-core/scss/index';
+//fonticons
+.fa {
+    font-family: FontAwesome, fontawesome-webfont;
+}
 
-// Global SCSS styling
-// @see https://docs.nativescript.org/ui/styling
+// ns themes
+@import '~nativescript-theme-core/css/core.light.android.css';
+
+    .action-bar {
+    color: #ffffff;
+    }
+    
+    .action-bar {
+    background-color: #353434;
+    }
+    
+    .page {
+    background-color: #fafeff;
+    }
+    
+    .tab-view {
+    tab-background-color: #fafeff;
+    }
+    
+    .list-group, .list-group-item {
+    background-color: #fafeff;
+    }
+    
+    .page label, .tab-view label {
+    color: #000000;
+    }
+    
+    .segmented-bar {
+    selected-background-color: #5dcb5b;
+    }
+    
+    .segmented-bar {
+    color: #000000;
+    }
+    
+    .segmented-bar {
+    background-color: #fafeff;
+    }
+    
+    .switch[checked=true] {
+    color: #000000;
+    }
+    
+    .switch[checked=true] {
+    background-color: #5dcb5b;
+    }
+    
+    .activity-indicator {
+    color: #5dcb5b;
+    }
+    
+    .slider {
+    color: #000000;
+    }
+    
+    .slider {
+    background-color: #5dcb5b;
+    }
+    
+    .progress {
+    color: #5dcb5b;
+    }
+    
+    .img-circle {
+    border-radius: 20;
+    }
+    
+    .list-group-item-heading {
+    font-size: 16;
+    }
+    
+    .list-group-item-text {
+    font-size: 14;
+    }
+    
+    .img-rounded {
+    border-radius: 5;
+    }
+    
+    .body {
+    font-size: 14;
+    }
+    
+    .h1 {
+    font-size: 36;
+    }
+    
+    .h2 {
+    font-size: 30;
+    }
+    
+    .h3 {
+    font-size: 24;
+    }
+    
+    .h4 {
+    font-size: 18;
+    }
+    
+    .h5 {
+    font-size: 14;
+    }
+    
+    .h6 {
+    font-size: 12;
+    }
+    
+    .page label.text-primary, .tab-view label.text-primary {
+    color: #5dcb5b;
+    }
+    
+    .page .bg-success, .tab-view .bg-success {
+        background-color: #5dcb5b;
+        color:#fff;
+    }
+
+    .page .bg-success label, .tab-view .bg-success label {
+        color:#fff;
+    }
+
+    .page label.bg-primary, .tab-view label.bg-primary {
+    background-color: #5dcb5b;
+    }
+    
+    .page label.text-danger, .tab-view label.text-danger {
+    color: #d9534f;
+    }
+    
+    .page label.bg-danger, .tab-view label.bg-danger {
+    background-color: #d9534f;
+    }
+    
+    .page label.text-muted, .tab-view label.text-muted {
+    color: #a2a2a2;
+    }
+    
+    .btn {
+    color: #5dcb5b;
+    }
+    
+    .btn-primary {
+    background-color: #5dcb5b;
+    }
+    
+    .btn-primary {
+    border-color: #5dcb5b;
+    }
+    
+    .btn-primary {
+    color: #ffffff;
+    }
+    
+    .btn-outline {
+    border-color: #5dcb5b;
+    }
+    
+    .btn-outline {
+    background-color: transparent;
+    }
+    
+    .btn-outline {
+    border-width: 1;
+    }
+    
+    .btn-outline {
+    color: #5dcb5b;
+    }
+    
+    .btn[isEnabled=false] {
+    background-color: #b7b7b7;
+    }
+    
+    .btn[isEnabled=false] {
+    border-color: #b7b7b7;
+    }
+    
+    .btn[isEnabled=false] {
+    color: #666666;
+    }
+    
+    .btn-rounded-sm {
+    border-radius: 4;
+    }
+    
+    .btn-rounded-lg {
+    border-radius: 20;
+    }
+    
+    .label {
+    font-size: 16;
+    }
+    
+    .input {
+    font-size: 14;
+    }
+    
+    .input-rounded {
+    border-radius: 30;
+    }
+    
+    .tab-view {
+    selected-tab-text-color: #ffffff;
+    }
+    
+    .tab-view {
+    tab-text-color: #ffffff;
+    }
+    
+    .tab-view {
+    tab-background-color: #5dcb5b;
+    }
+    
+    .tab-view {
+    android-selected-tab-highlight-color: #353434;
+    }
+    
+    .sidedrawer-header {
+    background-color: #353434;
+    }
+    
+    .sidedrawer-header-brand {
+    color: #ffffff;
+    }
+    
+    .sidedrawer-content {
+    background-color: #fafeff;
+    }
+    
+    .sidedrawer-list-item {
+    color: #000000;
+    }
+    
+    .sidedrawer-list-item.active {
+    background-color: #fafeff;
+    }
+    
+    .sidedrawer-list-item.active {
+    color: #000000;
+    }
+
+    // customs
+    .text-dimmed {
+        opacity: .4;
+    }
+    .title-icon{
+        font-size:22; 
+        padding-left:10; 
+        padding-right:10; 
+        background-color: transparent;
+    }
+        

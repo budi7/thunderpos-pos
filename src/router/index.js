@@ -7,6 +7,10 @@ import Home from '../components/Home';
 import HelloWorld from '../components/HelloWorld';
 import Counter from '../components/Counter';
 
+// pages
+import Pos from '../pages/pos';
+import Login from '../pages/login';
+
 const router = new VueRouter({
   pageRouting: true,
   routes: [
@@ -31,10 +35,24 @@ const router = new VueRouter({
         title: 'Counter',
       },
     },
-    {path: '*', redirect: '/home'},
+    {
+      path: '/pos',
+      component: Pos,
+      meta: {
+        title: 'pos',
+      },
+    },
+    {
+      path: '/login',
+      component: Login,
+      meta: {
+        title: 'login',
+      },
+    },        
+    {path: '*', redirect: '/pos'},
   ],
 });
 
-router.replace('/home');
+router.replace('/login');
 
 module.exports = router;
