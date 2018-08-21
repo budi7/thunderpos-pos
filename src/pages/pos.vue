@@ -19,28 +19,36 @@
                 </StackLayout>
                 <Label :text="'fa-angle-right' | fonticon" class="fa fa-2x h3" col="2" margin="0" verticalAlignment="middle" />
             </GridLayout>             
-            <StackLayout height="10000" verticalAlignment="middle">
-                <ListView class="list-group" for="product in searchResults" @itemTap="addToCart" style="height:10000;">
-                    <v-template>
+            <GridLayout  columns="*" rows="*">
+                <ListView :visibility="(isNoResult ? 'collapse' : 'visible')" class="list-group" for="product in searchResults" style="height:10000;" v-on:itemTap="addToCart">
+                    <v-template >
                         <StackLayout>
-                            <GridLayout columns="auto, *, auto" rows="auto, auto, auto" margin="12, 12, 6, 12" >
-                                <Image :src="product.imageSrc" rowSpan="3" width="54" height="54" verticalAlignment="top" margin="0,12,0,0"/>
-                                <Label :text="product.name" row="0" col="1" colSpan="2" class="list-group-item-heading" verticalAlignment="top" textWrap="false" margin="0"/>
-                                <Label :text="'UPC : ' + (product.config.is_stock ? product.upc : '_')" row=1 col="1" colspan="2" class="h6" margin="0"/>
-                                <Label :text="'IDR ' + formatPrice(product.price)" row="2" col="1" class="h6" horizontalAlignment="left" />
-                                <Label text="Tambahkan +" row="2" col="2" class="h6 text-success" verticalAlignment="bottom" />
-                                <Label text="" col="3" row="3" colspan="2" class="h6"/>
+                            <GridLayout columns="auto, *, auto" rows="auto, auto, auto, auto" margin="12,12,9,12" >
+                                <Image row="0" col="0" rowSpan="4" :src="product.info.imageSrc" width="62" height="62" verticalAlignment="top" margin="0,12,0,0"/>
+                                <Label row="0" col="1" colSpan="2" :text="product.info.name"  class="list-group-item-heading" verticalAlignment="top" textWrap="false" margin="0"/>
+                                <Label row="1" col="1" colspan="2" :text="'UPC : ' + (product.info.config.is_stock ? product.info.upc : '_')" class="h6"/>
+                                <Label row="2" col="1" colspan="2" :text="'IDR ' + formatPrice(product.info.price)"  class="h6" horizontalAlignment="left" margin="0,0,6,0" />  
+                                <stacklayout row="3" col="1" colspan="2">
+                                    <GridLayout columns="*, auto" rows="auto" >
+                                        <label row="0" col="0" horizontalAlignment="left" class="text-muted fa" margin="0,21,0,0" :visibility="(product.cart.qty > 0 ? 'visible' : 'hidden')">{{ product.cart.qty }} di {{'fa-shopping-cart' | fonticon}}</label>
+                                        <label row="0" col="1" horizontalAlignment="right" class="text-primary fa">Tambahkan {{'fa-plus' | fonticon}}</label>
+                                    </GridLayout>
+                                </stacklayout>
                             </GridLayout>
                         </StackLayout>
                     </v-template>
                 </ListView>
-            </StackLayout>
+                <StackLayout :visibility="(isNoResult ? 'visible' : 'collapse')" verticalAlignment="top">
+                    <label class="text-muted" text="Produk tidak ditemukan" textAlignment="center" paddingTop="50"></label>
+                </StackLayout> 
+            </GridLayout>
         </DockLayout>
     </Page>
 </template>
 
 <script>
     var isAndroid = require("platform");
+    import moduleCurrency from '../modules/currency';
 
     export default {
         data() {
@@ -63,7 +71,9 @@
             getData: function(){
                 // dummy
                 var products = require('../dummies/products')
-                this.products = products.data
+
+                this.products = products.data.map(function(x){ return {'info' : x, 'cart' : {'qty' : 0}} });
+
                 this.isLoading = false
             },
 
@@ -89,32 +99,42 @@
 
             // product lists
             addToCart: function (args) {
-                var selected_product = this.products[args.index]
+                var selected_product = this.products[this.products.findIndex(x => x.info.upc === args.item.info.upc)]
 
                 // update carts data
                 var model = {
-                    upc: selected_product.upc,
-                    imageSrc: selected_product.imageSrc,
-                    name: selected_product.name,
-                    price: selected_product.price,
+                    upc: selected_product.info.upc,
+                    imageSrc: selected_product.info.imageSrc,
+                    name: selected_product.info.name,
+                    price: selected_product.info.price,
                     qty: 1,
                 }
                 this.cartUpdater(this.carts, model)
 
+                // update main data
+                this.products[args.index].cart.qty++
+
                 // count total
                 this.totalItem++;
-                this.totalPrice = parseInt(this.totalPrice) + parseInt(selected_product.price)
+                this.totalPrice = parseInt(this.totalPrice) + parseInt(selected_product.info.price)
             },
 
             // cart 
             showCart: function(){
                 // this.$navigateTo(page_detail)
             },
+            cartStatus: function(upc){
+                var idx = this.carts.findIndex(x => x.upc === upc)
+
+                // empty?
+                if(idx < 0 ){ return }
+
+                return this.carts[idx].qty
+            },
 
             // helpers
             formatPrice(value) {
-                let val = (value/1).toFixed(0).replace('.', ',')
-                return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+                return moduleCurrency.format(value)
             },
             cartUpdater(current_data, new_data){
                 // check if new item existed on current data
@@ -130,14 +150,15 @@
         computed:{
             searchResults: function(){
                 var result = this.products
+
                 if (!this.searchQuery){
-                    this.isNoResult = false;
+                    this.isNoResult = false
                     if(this.returnEmptyOnNull){ return this.products}
                     return result
                 }
                 
                 var filterValue = this.searchQuery.toLowerCase()     
-                const filter = datas => datas['name'].toLowerCase().includes(filterValue)
+                const filter = datas => datas['info']['name'].toLowerCase().includes(filterValue)
                 var rslt = result.filter(filter)
 
                 if(rslt.length == 0){
