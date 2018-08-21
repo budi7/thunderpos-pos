@@ -123,6 +123,15 @@
         color:#fff;
     }
 
+    .page .bg-secondary, .tab-view .bg-secondary {
+        color:#5dcb5b;
+        background-color: #fff;
+    }
+
+    .page .bg-secondary label, .tab-view .bg-secondary label {
+        color:#5dcb5b;
+    }
+
     .page label.bg-primary, .tab-view label.bg-primary {
     background-color: #5dcb5b;
     }
@@ -248,7 +257,7 @@
         opacity: .4;
     }
     .text-muted{
-        opacity: .86;
+        opacity: .9;
     }
     .title-icon{
         font-size:22; 

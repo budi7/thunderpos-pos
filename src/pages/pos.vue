@@ -11,14 +11,16 @@
                 </stacklayout>
                 <SearchBar v-model="searchQuery" height="54" width="100%" id="searchbar"  @clear="onSearchClear" @submit="onSearchSubmit" @loaded="onSearchLoaded"/> 
             </stacklayout>
-            <GridLayout @tap="showDetail" dock="bottom" columns="auto, *, auto" rows="auto" padding="12, 16, 12, 16" class="bg-success">
-                <label :text="'fa-shopping-cart' | fonticon" class="fa fa-2x h3" verticalAlignment="middle" margin="0, 24, 0, 0"/>
-                <StackLayout col="1" >
-                    <Label :text="'IDR ' + formatPrice(totalPrice)" class="list-group-item-heading" margin="0"/>
-                    <Label :text="totalItem + ' Item'" class="h6" margin="0"/>
-                </StackLayout>
-                <Label :text="'fa-angle-right' | fonticon" class="fa fa-2x h3" col="2" margin="0" verticalAlignment="middle" />
-            </GridLayout>             
+            <StackLayout @tap="showDetail" dock="bottom">
+                <GridLayout  columns="auto, *, auto" rows="auto" padding="12, 16, 12, 16" class="bg-success">
+                    <label :text="'fa-shopping-cart' | fonticon" class="fa fa-2x h3" verticalAlignment="middle" margin="0, 24, 0, 0"/>
+                    <StackLayout col="1" >
+                        <Label :text="'IDR ' + formatPrice(totalPrice)" class="list-group-item-heading" margin="0"/>
+                        <Label :text="totalItem + ' Item'" class="h6" margin="0"/>
+                    </StackLayout>
+                    <Label :text="'fa-angle-right' | fonticon" class="fa fa-2x h3" col="2" margin="0" verticalAlignment="middle" />
+                </GridLayout>  
+            </StackLayout>
             <GridLayout  columns="*" rows="*">
                 <ListView :visibility="(isNoResult ? 'collapse' : 'visible')" class="list-group" for="product in searchResults" style="height:10000;" v-on:itemTap="addToCart">
                     <v-template >
