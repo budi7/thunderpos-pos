@@ -20,8 +20,6 @@ Vue.filter('fonticon', fonticon);
 
 // Uncomment the following to see NativeScript-Vue output logs
 //Vue.config.silent = false;
-
-
 new Vue({
 
   router,

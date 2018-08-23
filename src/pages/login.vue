@@ -118,8 +118,6 @@ export default {
 
 .btn-primary {
   height: 50;
-  margin: 30 5 15 5;
-  border-radius: 5;
   font-size: 20;
   font-weight: 600;
 }

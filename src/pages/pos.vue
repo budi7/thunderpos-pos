@@ -22,26 +22,24 @@
                 </GridLayout>  
             </StackLayout>
             <GridLayout  columns="*" rows="*">
-                <ListView :visibility="(isNoResult ? 'collapse' : 'visible')" class="list-group" for="product in searchResults" style="height:10000;" v-on:itemTap="addToCart">
+                <ListView :visibility="(isNoResult ? 'collapse' : 'visible')" class="list-group" for="product in searchResults" style="height:10000;" padding="12,16,9,16" >
                     <v-template >
-                        <StackLayout>
-                            <GridLayout columns="auto, *, auto" rows="auto, auto, auto, auto" margin="12,12,9,12" >
-                                <Image row="0" col="0" rowSpan="4" :src="product.info.imageSrc" width="62" height="62" verticalAlignment="top" margin="0,12,0,0"/>
-                                <Label row="0" col="1" colSpan="2" :text="product.info.name"  class="list-group-item-heading" verticalAlignment="top" textWrap="false" margin="0"/>
-                                <Label row="1" col="1" colspan="2" :text="'UPC : ' + (product.info.config.is_stock ? product.info.upc : '_')" class="h6"/>
-                                <Label row="2" col="1" colspan="2" :text="'IDR ' + formatPrice(product.info.price)"  class="h6" horizontalAlignment="left" margin="0,0,6,0" />  
-                                <stacklayout row="3" col="1" colspan="2">
-                                    <GridLayout columns="*, auto" rows="auto" >
-                                        <label row="0" col="0" horizontalAlignment="left" class="text-muted fa" margin="0,21,0,0" :visibility="(product.cart.qty > 0 ? 'visible' : 'hidden')">{{ product.cart.qty }} di {{'fa-shopping-cart' | fonticon}}</label>
-                                        <label row="0" col="1" horizontalAlignment="right" class="text-primary fa">Tambahkan {{'fa-plus' | fonticon}}</label>
-                                    </GridLayout>
-                                </stacklayout>
-                            </GridLayout>
-                        </StackLayout>
+                        <GridLayout :id="product.info.upc" v-on:tap="addToCart" v-on:longPress="showInfo" columns="auto, *, auto" rows="auto, auto, auto, auto" padding="8,12,6,12" >
+                            <Image row="0" col="0" rowSpan="4" :src="product.info.imageSrc" width="62" height="62" verticalAlignment="top" margin="0,12,0,0"/>
+                            <Label row="0" col="1" colSpan="2" :text="product.info.name"  class="list-group-item-heading" verticalAlignment="top" textWrap="false" margin="0"/>
+                            <Label row="1" col="1" colspan="2" :text="'UPC : ' + (product.info.config.is_stock ? product.info.upc : '_')" class="h6"/>
+                            <Label row="2" col="1" colspan="2" :text="'IDR ' + formatPrice(product.info.price)"  class="h6" horizontalAlignment="left" margin="0,0,6,0" />  
+                            <stacklayout row="3" col="1" colspan="2">
+                                <GridLayout columns="*, *" rows="auto" >
+                                    <label row="0" col="0" horizontalAlignment="left" class="text-primary fa" margin="0,21,0,0" :visibility="(product.cart.qty > 0 ? 'visible' : 'hidden')">{{ product.cart.qty }} in {{'fa-shopping-cart' | fonticon}}</label>
+                                    <label row="0" col="1" horizontalAlignment="right" class="text-muted fa">Add {{'fa-plus' | fonticon}}</label>
+                                </GridLayout>
+                            </stacklayout>
+                        </GridLayout>
                     </v-template>
                 </ListView>
                 <StackLayout :visibility="(isNoResult ? 'visible' : 'collapse')" verticalAlignment="top">
-                    <label class="text-muted" text="Produk tidak ditemukan" textAlignment="center" paddingTop="50"></label>
+                    <label class="text-muted" text="Item not found" textAlignment="center" paddingTop="50"></label>
                 </StackLayout> 
             </GridLayout>
         </DockLayout>
@@ -49,8 +47,10 @@
 </template>
 
 <script>
-    var isAndroid = require("platform");
-    import moduleCurrency from '../modules/currency';
+    var isAndroid = require("platform")
+    import moduleCurrency from '../modules/currency'
+    
+    import modalProductDetail from '../modals/productDetail'
 
     export default {
         data() {
@@ -101,7 +101,7 @@
 
             // product lists
             addToCart: function (args) {
-                var selected_product = this.products[this.products.findIndex(x => x.info.upc === args.item.info.upc)]
+                var selected_product = this.products[this.products.findIndex(x => x.info.upc === args.object.get("id"))]
 
                 // update carts data
                 var model = {
@@ -114,11 +114,16 @@
                 this.cartUpdater(this.carts, model)
 
                 // update main data
-                this.products[args.index].cart.qty++
+                selected_product.cart.qty++
+                // /this.products[args.object.get("id")].cart.qty++
 
                 // count total
                 this.totalItem++;
                 this.totalPrice = parseInt(this.totalPrice) + parseInt(selected_product.info.price)
+            },
+            showInfo: function (args){
+                var selected_product = this.products[this.products.findIndex(x => x.info.upc === args.object.get("id"))]
+                this.$showModal(modalProductDetail, { context: { propsData: {product : selected_product}}})
             },
 
             // cart 
@@ -175,6 +180,7 @@
         components: {
         }
     };
+
 </script>
 
 <style scoped>
