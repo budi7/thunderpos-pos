@@ -8,8 +8,9 @@ import HelloWorld from '../components/HelloWorld';
 import Counter from '../components/Counter';
 
 // pages
-import Pos from '../pages/pos';
+import Cart from '../pages/cart';
 import Login from '../pages/login';
+import Pos from '../pages/pos';
 
 const router = new VueRouter({
   pageRouting: true,
@@ -42,6 +43,13 @@ const router = new VueRouter({
         title: 'pos',
       },
     },
+    {
+      path: '/cart',
+      component: Cart,
+      meta: {
+        title: 'cart',
+      },
+    },    
     {
       path: '/login',
       component: Login,

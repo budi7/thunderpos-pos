@@ -11,8 +11,8 @@
                 </stacklayout>
                 <SearchBar v-model="searchQuery" height="54" width="100%" id="searchbar"  @clear="onSearchClear" @submit="onSearchSubmit" @loaded="onSearchLoaded"/> 
             </stacklayout>
-            <StackLayout @tap="showDetail" dock="bottom">
-                <GridLayout  columns="auto, *, auto" rows="auto" padding="12, 16, 12, 16" class="bg-success">
+            <StackLayout dock="bottom" :visibility="(carts.length == 0 ? 'collapse' : 'visible')">
+                <GridLayout  @tap="showCart" columns="auto, *, auto" rows="auto" padding="12, 16, 12, 16" class="bg-success">
                     <label :text="'fa-shopping-cart' | fonticon" class="fa fa-2x h3" verticalAlignment="middle" margin="0, 24, 0, 0"/>
                     <StackLayout col="1" >
                         <Label :text="'IDR ' + formatPrice(totalPrice)" class="list-group-item-heading" margin="0"/>
@@ -30,8 +30,8 @@
                             <Label row="1" col="1" colspan="2" :text="'UPC : ' + (product.info.config.is_stock ? product.info.upc : '_')" class="h6"/>
                             <Label row="2" col="1" colspan="2" :text="'IDR ' + formatPrice(product.info.price)"  class="h6" horizontalAlignment="left" margin="0,0,6,0" />  
                             <stacklayout row="3" col="1" colspan="2">
-                                <GridLayout columns="*, *" rows="auto" >
-                                    <label row="0" col="0" horizontalAlignment="left" class="text-primary fa" margin="0,21,0,0" :visibility="(product.cart.qty > 0 ? 'visible' : 'hidden')">{{ product.cart.qty }} in {{'fa-shopping-cart' | fonticon}}</label>
+                                <GridLayout columns="*, 50" rows="auto" >
+                                    <label row="0" col="0" horizontalAlignment="left" width="100%" class="text-primary fa" margin="0,21,0,0" :visibility="(product.cart.qty > 0 ? 'visible' : 'hidden')">{{ product.cart.qty }} in {{'fa-shopping-cart' | fonticon}}</label>
                                     <label row="0" col="1" horizontalAlignment="right" class="text-muted fa">Add {{'fa-plus' | fonticon}}</label>
                                 </GridLayout>
                             </stacklayout>
@@ -128,7 +128,8 @@
 
             // cart 
             showCart: function(){
-                // this.$navigateTo(page_detail)
+                // this.$store.state.counter.count.toString();
+                this.$router.push('cart')
             },
             cartStatus: function(upc){
                 var idx = this.carts.findIndex(x => x.upc === upc)

@@ -45,7 +45,7 @@ export default {
     methods:{
         submit: function(){
             
-            console.log(this.$router.push('pos'))
+            this.$router.push('pos')
             return
 
 
@@ -120,6 +120,7 @@ export default {
   height: 50;
   font-size: 20;
   font-weight: 600;
+  margin: 30 5 15 5;
 }
 .login-label {
   horizontal-align: center;

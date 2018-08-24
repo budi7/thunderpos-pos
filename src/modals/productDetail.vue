@@ -22,15 +22,19 @@
                     <stackLayout row="0" col="0" padding="32,16,16,16">
                         <Image :src="product.info.imageSrc" width="90%" class="m-b-30"/>
                         <label class="h5 m-b-10">Item Description</label>
-                        <label textWrap="true" width="100%">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                        </label>
+                        <label textWrap="true" width="100%">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</label>
                     </stackLayout>
                 </ScrollView>
                 <ScrollView :visibility="(page_tab == 'detail' ? 'collapse' : 'visible')">
-                    <stackLayout row="0" col="0" padding="32,16,16,16">
-                        <label class="h5 m-b-10">Item Promotions</label>
-                        <label textWrap="true" width="100%">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                        </label>
+                    <stackLayout row="0" col="0" padding="24,16,16,16">
+                        <label class="h5 m-b-0">Discount 17 Agustus</label>
+                        <label class="m-b-10" textWrap="true" width="100%">16 Agustus 2018 - 31 Agustus 2018</label>
+                        <label textWrap="true" width="100%">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</label>
+                        <StackLayout class="hr-light m-t-20 m-b-20"></StackLayout>
+                        <label class="h5 m-b-0">Discount 17 Agustus</label>
+                        <label class="m-b-10" textWrap="true" width="100%">16 Agustus 2018 - 31 Agustus 2018</label>
+                        <label textWrap="true" width="100%">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</label>
+                        <StackLayout class="hr-light m-t-20 m-b-20"></StackLayout>                                  
                     </stackLayout>
                 </ScrollView>
             </GridLayout>
@@ -66,6 +70,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+    .btn-primary{
+        margin: 6;
+    }
 </style>
