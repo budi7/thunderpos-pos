@@ -11,12 +11,12 @@
                 </stacklayout>
                 <SearchBar v-model="searchQuery" height="54" width="100%" id="searchbar"  @clear="onSearchClear" @submit="onSearchSubmit" @loaded="onSearchLoaded"/> 
             </stacklayout>
-            <StackLayout dock="bottom" :visibility="(carts.length == 0 ? 'collapse' : 'visible')">
+            <StackLayout dock="bottom" :visibility="($store.getters.cartItemsCount == 0 ? 'collapse' : 'visible')">
                 <GridLayout  @tap="showCart" columns="auto, *, auto" rows="auto" padding="12, 16, 12, 16" class="bg-success">
                     <label :text="'fa-shopping-cart' | fonticon" class="fa fa-2x h3" verticalAlignment="middle" margin="0, 24, 0, 0"/>
                     <StackLayout col="1" >
-                        <Label :text="'IDR ' + formatPrice(totalPrice)" class="list-group-item-heading" margin="0"/>
-                        <Label :text="totalItem + ' Item'" class="h6" margin="0"/>
+                        <Label :text="'IDR ' + formatPrice(this.$store.getters.cart_total_price)" class="list-group-item-heading" margin="0"/>
+                        <Label :text="this.$store.getters.cartItemsCount + ' Item'" class="h6" margin="0"/>
                     </StackLayout>
                     <Label :text="'fa-angle-right' | fonticon" class="fa fa-2x h3" col="2" margin="0" verticalAlignment="middle" />
                 </GridLayout>  
@@ -111,8 +111,15 @@
                     price: selected_product.info.price,
                     qty: 1,
                 }
-                this.cartUpdater(this.carts, model)
+                // this.cartUpdater(this.carts, model)
+                //onsole.log(this.$store.actions.cartItemAdd(model))
+                //this.cartItemAdd(model);
+                //this.$store.dispatch('cartItemAdd', model)
+                this.$store.commit('cartItemAdd', model)
 
+                console.log(this.$store.getters.cartItemsCount)
+                // console.log(this.$store.getters.cartItemsCount)
+                
                 // update main data
                 selected_product.cart.qty++
                 // /this.products[args.object.get("id")].cart.qty++

@@ -1,5 +1,6 @@
 const state = {
   count: 0,
+  say: "hi"
 };
 
 const mutations = {
