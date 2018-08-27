@@ -104,22 +104,14 @@
                 var selected_product = this.products[this.products.findIndex(x => x.info.upc === args.object.get("id"))]
 
                 // update carts data
-                var model = {
+                this.$store.commit('cartItemAdd', {
                     upc: selected_product.info.upc,
                     imageSrc: selected_product.info.imageSrc,
                     name: selected_product.info.name,
                     price: selected_product.info.price,
                     qty: 1,
-                }
-                // this.cartUpdater(this.carts, model)
-                //onsole.log(this.$store.actions.cartItemAdd(model))
-                //this.cartItemAdd(model);
-                //this.$store.dispatch('cartItemAdd', model)
-                this.$store.commit('cartItemAdd', model)
+                })
 
-                console.log(this.$store.getters.cartItemsCount)
-                // console.log(this.$store.getters.cartItemsCount)
-                
                 // update main data
                 selected_product.cart.qty++
                 // /this.products[args.object.get("id")].cart.qty++
