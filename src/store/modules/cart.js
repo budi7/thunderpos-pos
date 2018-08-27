@@ -30,10 +30,10 @@ const mutations = {
         }
  
          // 2. update total price
-         state.cart_total_price = state.cart_total_price + payload.price 
+         state.cart_total_price = parseInt(state.cart_total_price) + parseInt(payload.price) 
  
          // 3. update total items
-         state.cart_total_item = state.cart_total_item + payload.qty 
+         state.cart_total_item = parseInt(state.cart_total_item) + parseInt(payload.qty) 
     },
     cartItemRemove: (state, payload) => { 
         // 1. update carts
