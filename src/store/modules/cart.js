@@ -23,12 +23,22 @@ const getters = {
 const mutations = {
     cartItemAdd: (state, payload) => {
         // 1. update carts
-        var idx = state.cart_items.findIndex(x => x.upc === payload.upc)
+        console.log("--")
+        console.log(payload.upc)
+        try{
+            var idx = state.cart_items.findIndex(x => x.upc === payload.upc)
+        }catch(ex){
+            console.log(state.cart_items)
+            console.log(state.cart_items)
+            console.log(ex)
+        }
 
         if(idx < 0){ 
             // 1.a new data
+            console.log(1)
             state.cart_items.push(payload) 
         }else{
+            console.log(2)
             // 1.b update qty
             state.cart_items[idx].qty++
         }
@@ -72,7 +82,11 @@ const mutations = {
             state.cart_items[idx] = payload
         }else{
             // 3.b. remove item from cart
-            delete state.cart_items[idx];
+            if(state.cart_items[idx].length > 1){
+                state.cart_items.splice(idx, 1);
+            }else{
+                state.cart_items = []
+            }
         }
     },
     cartReset (){
