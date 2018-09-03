@@ -2,12 +2,17 @@
     <Page class="page">
         <ActionBar class="action-bar" title="BakerHood" flat="true">
             <ActionItem @tap="changeBarcodeMode" ios.position="right" android.position="actionBar">
-                <Label style="color:#fff;" :class="isBarcodeMode ? 'fa title-icon' : 'fa title-icon text-dimmed '"  :text="'fa-qrcode' | fonticon" />
+                <Label style="color:#fff;" :class="isBarcodeMode ? 'fa title-icon' : 'fa title-icon text-dimmed '"  :text="'fa-camera' | fonticon" />
             </ActionItem>
         </ActionBar>
         <DockLayout stretchLastChild="true">
             <StackLayout dock="top">
-                <StackLayout dock="top" :visibility="(isBarcodeMode ? 'visible' : 'collapse')" height="25%" style="background-color:#353434;">
+                <StackLayout dock="top" v-if="(isBarcodeMode)" style="background-color:#000;">
+                    <MLKitBarcodeScanner
+                        height="275"
+                        formats="QR_CODE, EAN_8, EAN_13"
+                        @scanResult="scanDone($event)">
+                    </MLKitBarcodeScanner>
                 </stacklayout>
                 <SearchBar v-model="searchQuery" height="54" width="100%" id="searchbar"  @clear="onSearchClear" @submit="onSearchSubmit" @loaded="onSearchLoaded"/> 
             </stacklayout>
@@ -16,23 +21,29 @@
                     <label :text="'fa-shopping-cart' | fonticon" class="fa fa-2x h3" verticalAlignment="middle" margin="0, 24, 0, 0"/>
                     <StackLayout col="1" >
                         <Label :text="'IDR ' + formatPrice(this.$store.getters.cartTotalPrice)" class="list-group-item-heading" margin="0"/>
-                        <Label :text="this.$store.getters.cartItemsCount + ' Item'" class="h6" margin="0"/>
+                        <Label :text="(this.$store.getters.cartItemsCount > 1) ? this.$store.getters.cartItemsCount + ' Items' : this.$store.getters.cartItemsCount + ' Item'" class="h6" margin="0"/>
                     </StackLayout>
                     <Label :text="'fa-angle-right' | fonticon" class="fa fa-2x h3" col="2" margin="0" verticalAlignment="middle" />
                 </GridLayout>  
             </StackLayout>
             <GridLayout  columns="*" rows="*">
-                <ListView :visibility="(isNoResult ? 'collapse' : 'visible')" class="list-group" for="product in searchResults" style="height:10000;" padding="12,16,9,16" >
+                <ListView :visibility="(isNoResult ? 'collapse' : 'visible')" class="list-group" for="product in searchResults" padding="12,16,9,16" >
                     <v-template >
-                        <GridLayout :id="product.info.upc" v-on:tap="addToCart" v-on:longPress="showInfo" columns="auto, *, auto" rows="auto, auto, auto, auto" padding="8,12,6,12" >
+                        <GridLayout :id="product.info.upc" v-on:longPress="showInfo" v-on:tap="addToCart" columns="auto, *, auto" rows="auto, auto, auto, auto" padding="8,12,6,12" >
                             <Image row="0" col="0" rowSpan="4" :src="product.info.imageSrc" width="62" height="62" verticalAlignment="top" margin="0,12,0,0"/>
                             <Label row="0" col="1" colSpan="2" :text="product.info.name"  class="list-group-item-heading" verticalAlignment="top" textWrap="false" margin="0"/>
                             <Label row="1" col="1" colspan="2" :text="'UPC : ' + (product.info.config.is_stock ? product.info.upc : '_')" class="h6"/>
-                            <Label row="2" col="1" colspan="2" :text="'IDR ' + formatPrice(product.info.price)"  class="h6" horizontalAlignment="left" margin="0,0,6,0" />  
+                            <Label row="2" col="1" colspan="2" :text="'IDR ' + formatPrice(product.info.price)"  class="h6" horizontalAlignment="left" margin="0,0,3,0" />  
                             <stacklayout row="3" col="1" colspan="2">
-                                <GridLayout columns="*, 50" rows="auto" >
-                                    <label row="0" col="0" horizontalAlignment="left" width="100%" class="text-primary fa" margin="0,21,0,0" :visibility="(product.cart.qty > 0 ? 'visible' : 'hidden')">{{ product.cart.qty }} in {{'fa-shopping-cart' | fonticon}}</label>
-                                    <label row="0" col="1" horizontalAlignment="right" class="text-muted fa">Add {{'fa-plus' | fonticon}}</label>
+                                <!--
+                                <GridLayout columns="*, 66, 40" rows="auto" >
+                                -->
+                                <GridLayout columns="*, 68" rows="auto" >
+                                    <label row="0" col="0" verticalAlignment="center" horizontalAlignment="left" width="100%" class="text-primary fa" margin="0,21,0,0" :visibility="(product.cart.qty > 0 ? 'visible' : 'hidden')">{{ product.cart.qty }} in {{'fa-shopping-cart' | fonticon}}</label>
+                                    <button row="0" col="1" v-if="(product.cart.qty > 0)" :id="product.info.upc" v-on:tap="addNotes" width="100%" class="btn-primary btn-sm text-center fa" >Notes  {{'fa-plus' | fonticon}}</button>
+                                    <!--
+                                    <label row="0" col="2" verticalAlignment="center" width="100%" class="text-muted text-right fa">Add {{'fa-plus' | fonticon}}</label>
+                                    -->
                                 </GridLayout>
                             </stacklayout>
                         </GridLayout>
@@ -51,6 +62,7 @@
     import moduleCurrency from '../modules/currency'
     
     import modalProductDetail from '../modals/productDetail'
+    import modalOrderNotes from '../modals/orderNotes'
 
     export default {
         data() {
@@ -84,6 +96,15 @@
                 this.isBarcodeMode = !this.isBarcodeMode;
             },
 
+            // barcode
+            scanDone(args){
+                if(args.value.barcodes.length > 0){
+                //breaker to delay
+                // console.log(args.value.barcodes[0].value)
+                console.log(args.value.barcodes)
+                }
+            },
+
             // searchbar
             onSearchLoaded(args){
                 args.object.dismissSoftInput()
@@ -104,7 +125,7 @@
                 var selected_product = this.products[this.products.findIndex(x => x.info.upc === args.object.get("id"))]
 
                 // update carts data
-                this.$store.commit('cartItemAdd', {
+                this.$store.dispatch('cartItemAdd', {
                     upc: selected_product.info.upc,
                     imageSrc: selected_product.info.imageSrc,
                     name: selected_product.info.name,
@@ -115,20 +136,27 @@
                 // update main data
                 selected_product.cart.qty++
                 // /this.products[args.object.get("id")].cart.qty++
-
-                // count total
-                this.totalItem++;
-                this.totalPrice = parseInt(this.totalPrice) + parseInt(selected_product.info.price)
             },
             showInfo: function (args){
                 var selected_product = this.products[this.products.findIndex(x => x.info.upc === args.object.get("id"))]
-                this.$showModal(modalProductDetail, { context: { propsData: {product : selected_product}}})
+                this.$showModal(modalProductDetail, { context: { propsData: {product : selected_product}}}).then(function(qty){
+                    selected_product.cart.qty = qty
+                })
+            },
+            addNotes(args){
+                var selected_product = this.products[this.products.findIndex(x => x.info.upc === args.object.get("id"))]
+                this.$showModal(modalOrderNotes, { context: { propsData: {product : selected_product}}}).then(function(qty){
+                    selected_product.cart.qty = qty
+                })
             },
 
             // cart 
             showCart: function(){
-                // this.$store.state.counter.count.toString();
+                // next page
                 this.$router.push('cart')
+
+                //  reset state barcode scanner
+                this.isBarcodeMode = false                
             },
             cartStatus: function(upc){
                 var idx = this.carts.findIndex(x => x.upc === upc)
@@ -155,7 +183,7 @@
             }
         },
         computed:{
-            searchResults: function(){
+            searchResults() {
                 var result = this.products
 
                 if (!this.searchQuery){

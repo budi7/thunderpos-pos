@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "917130608584",
+    "firebase_url": "https://thunder-pos.firebaseio.com",
+    "project_id": "thunder-pos",
+    "storage_bucket": "thunder-pos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:917130608584:android:36f95ef71b0f8d1b",
+        "android_client_info": {
+          "package_name": "com.thunderlabid.pos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "917130608584-j2m944ofo3inoj8u6gq3pakjaamugqe8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4xYZ6Xfd1nwPZzYZDaW9FUiHkBGMMfaU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
