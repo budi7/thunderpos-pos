@@ -140,13 +140,13 @@
             showInfo: function (args){
                 var selected_product = this.products[this.products.findIndex(x => x.info.upc === args.object.get("id"))]
                 this.$showModal(modalProductDetail, { context: { propsData: {product : selected_product}}}).then(function(qty){
-                    selected_product.cart.qty = qty
+                    selected_product.cart.qty = (!qty && qty != 0 ? selected_product.cart.qty : qty)  
                 })
             },
             addNotes(args){
                 var selected_product = this.products[this.products.findIndex(x => x.info.upc === args.object.get("id"))]
                 this.$showModal(modalOrderNotes, { context: { propsData: {product : selected_product}}}).then(function(qty){
-                    selected_product.cart.qty = qty
+                    selected_product.cart.qty = (!qty && qty != 0 ? selected_product.cart.qty : qty)  
                 })
             },
 

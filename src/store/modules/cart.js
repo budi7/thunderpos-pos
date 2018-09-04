@@ -44,7 +44,7 @@ const mutations = {
         }
  
          // 2. update total price
-         state.cart_total_price = parseInt(state.cart_total_price) + parseInt(payload.price) 
+         state.cart_total_price = parseFloat(state.cart_total_price) + parseFloat(payload.price) 
  
          // 3. update total items
          state.cart_total_item = parseInt(state.cart_total_item) + parseInt(payload.qty) 
@@ -56,10 +56,10 @@ const mutations = {
         // else, update qty only
 
         // 2. update total price
-        state.cart_total_price = parseFloat(state.cart_total_price - payload.price)
+        state.cart_total_price = parseFloat(state.cart_total_price) - parseFloat(payload.price)
 
         // 3. update total items
-        state.cart_total_item = parseInt(state.cart_total_item - payload.qty)
+        state.cart_total_item = parseInt(state.cart_total_item) - parseInt(payload.qty)
     },
     cartItemEdit: (state, payload) => {
         // 1. Get payload index on cart & validate
@@ -73,7 +73,7 @@ const mutations = {
             state.cart_total_price = parseFloat(state.cart_total_price - (state.cart_items[idx].price * state.cart_items[idx].qty) + (payload.qty * payload.price))
             
             // 2.b. recalculate total items
-            state.cart_total_item = parseInt(state.cart_total_item - state.cart_items[idx].qty + payload.qty)
+            state.cart_total_item = parseInt(state.cart_total_item) - parseInt(state.cart_items[idx].qty) + parseInt(payload.qty)
         }
 
         // 3. edit selected cart item
@@ -82,7 +82,10 @@ const mutations = {
             state.cart_items[idx] = payload
         }else{
             // 3.b. remove item from cart
-            if(state.cart_items[idx].length > 1){
+            if(state.cart_items.length > 1){
+                console.log(payload.upc)
+                console.log(idx)
+                
                 state.cart_items.splice(idx, 1);
             }else{
                 state.cart_items = []

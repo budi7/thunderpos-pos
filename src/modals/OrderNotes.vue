@@ -48,13 +48,14 @@ export default {
     mounted() {
         // vuex : get current cart
         // init bindable data helpers
+
+        // error 
+        this.cart = this.$store.getters.cartItem(this.product.info.upc)
+        this.cart_qty = this.cart.qty 
         try{
-            this.cart = this.$store.getters.cartItem(this.product.info.upc)
-            this.cart_notes = this.cart.notes 
-            this.cart_qty = this.cart.qty 
+            this.cart_notes = this.cart.notes
         }catch(ex){
             this.cart_notes = ""
-            this.cart_qty = 0 
             console.log("error: " + ex)
         }
     },
