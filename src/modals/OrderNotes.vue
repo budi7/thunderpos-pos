@@ -6,7 +6,7 @@
                     <Image row="0" col="0" rowSpan="3" :src="product.info.imageSrc" width="57" height="57" verticalAlignment="top" margin="0,12,0,0"/>
                     <Label row="0" col="1" colSpan="2" :text="product.info.name"  class="list-group-item-heading" verticalAlignment="top" textWrap="false" margin="0"/>
                     <Label row="1" col="1" colspan="2" :text="'UPC : ' +  product.info.upc" class="h6" margin="0"/>
-                    <Label row="2" col="1" colspan="2" :text="'IDR ' + formatPrice(product.info.price)"  class="h6" horizontalAlignment="left" margin="0,0,9,0" />  
+                    <Label row="2" col="1" colspan="2" :text="formatPrice(product.info.price)"  class="h6" horizontalAlignment="left" margin="0,0,9,0" />  
                     <GridLayout row="3" class="form" col="1" columns="34, auto, *, auto" rows="auto">
                         <label row="0" col="0" class="fa cart-icon text-muted" verticalAlignment="center">{{'fa-shopping-cart' | fonticon}}</label>
                         <button row="0" col="1" @tap="removeCartQty" class="btn-primary btn-sm text-center" margin="0,0,0,0">-</button>
@@ -34,7 +34,7 @@
 
 <script>
 var isAndroid = require("platform")
-import moduleCurrency from '../modules/currency'
+import moduleFormatter from '../modules/formatter'
 
 export default {
     data() {
@@ -62,7 +62,7 @@ export default {
     methods:{
         // helpers
         formatPrice(value) {
-            return moduleCurrency.format(value)
+            return moduleFormatter.price(value)
         },
 
         // cart

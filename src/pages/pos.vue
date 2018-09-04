@@ -20,7 +20,7 @@
                 <GridLayout  @tap="showCart" columns="auto, *, auto" rows="auto" padding="12, 16, 12, 16" class="bg-success">
                     <label :text="'fa-shopping-cart' | fonticon" class="fa fa-2x h3" verticalAlignment="middle" margin="0, 24, 0, 0"/>
                     <StackLayout col="1" >
-                        <Label :text="'IDR ' + formatPrice(this.$store.getters.cartTotalPrice)" class="list-group-item-heading" margin="0"/>
+                        <Label :text="formatPrice(this.$store.getters.cartTotalPrice)" class="list-group-item-heading" margin="0"/>
                         <Label :text="(this.$store.getters.cartItemsCount > 1) ? this.$store.getters.cartItemsCount + ' Items' : this.$store.getters.cartItemsCount + ' Item'" class="h6" margin="0"/>
                     </StackLayout>
                     <Label :text="'fa-angle-right' | fonticon" class="fa fa-2x h3" col="2" margin="0" verticalAlignment="middle" />
@@ -33,7 +33,7 @@
                             <Image row="0" col="0" rowSpan="4" :src="product.info.imageSrc" width="62" height="62" verticalAlignment="top" margin="0,12,0,0"/>
                             <Label row="0" col="1" colSpan="2" :text="product.info.name"  class="list-group-item-heading" verticalAlignment="top" textWrap="false" margin="0"/>
                             <Label row="1" col="1" colspan="2" :text="'UPC : ' + (product.info.config.is_stock ? product.info.upc : '_')" class="h6"/>
-                            <Label row="2" col="1" colspan="2" :text="'IDR ' + formatPrice(product.info.price)"  class="h6" horizontalAlignment="left" margin="0,0,3,0" />  
+                            <Label row="2" col="1" colspan="2" :text="formatPrice(product.info.price)"  class="h6" horizontalAlignment="left" margin="0,0,3,0" />  
                             <stacklayout row="3" col="1" colspan="2">
                                 <!--
                                 <GridLayout columns="*, 66, 40" rows="auto" >
@@ -59,7 +59,7 @@
 
 <script>
     var isAndroid = require("platform")
-    import moduleCurrency from '../modules/currency'
+    import formatter from '../modules/formatter'
     
     import modalProductDetail from '../modals/productDetail'
     import modalOrderNotes from '../modals/orderNotes'
@@ -169,8 +169,11 @@
 
             // helpers
             formatPrice(value) {
-                return moduleCurrency.format(value)
+                return formatter.price(value)
             },
+            formatNumber(value) {
+                return formatter.number(value)
+            },            
             cartUpdater(current_data, new_data){
                 // check if new item existed on current data
                 var idx = current_data.findIndex(x => x.upc === new_data.upc)

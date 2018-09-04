@@ -7,7 +7,7 @@
             <StackLayout dock="bottom" :visibility="($store.getters.cartItemsCount == 0 ? 'collapse' : 'visible')">
                 <GridLayout  @tap="checkout" columns="auto, *, auto" rows="auto" padding="12, 16, 12, 16" class="bg-success">
                     <StackLayout col="1" >
-                        <Label :text="'IDR ' + formatPrice(this.$store.getters.cartTotalPrice)" class="list-group-item-heading" margin="0"/>
+                        <Label :text="formatPrice(this.$store.getters.cartTotalPrice)" class="list-group-item-heading" margin="0"/>
                         <Label :text="(this.$store.getters.cartItemsCount > 1) ? 'Checkout ' + this.$store.getters.cartItemsCount + ' Items' : 'Checkout' + this.$store.getters.cartItemsCount + ' Item'" class="h5" margin="0"/>
                     </StackLayout>
                     <Label :text="'fa-angle-double-right' | fonticon" class="fa fa-2x h3" col="2" margin="0" verticalAlignment="middle" />
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-    import moduleCurrency from '../modules/currency'
+    import formatter from '../modules/formatter'
 
     export default {
         data() {
@@ -51,7 +51,7 @@
 
             },
             formatPrice(value){
-                return moduleCurrency.format(value)
+                return formatter.price(value)
             }
         }
 
