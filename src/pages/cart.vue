@@ -20,7 +20,7 @@
                             <Image row="0" col="0" rowSpan="4" :src="product.imageSrc" width="62" height="62" verticalAlignment="top" margin="0,12,0,0"/>
                             <Label row="0" col="1" colSpan="2" :text="product.name"  class="list-group-item-heading" verticalAlignment="top" textWrap="false" margin="0"/>
                             <Label row="1" col="1" colspan="2" :text="'UPC : ' + (product.upc ? product.upc : '_')" class="h6"/>
-                            <Label row="2" col="1" colspan="2" :text="'IDR ' + formatPrice(product.price)"  class="h6" horizontalAlignment="left" margin="0,0,6,0" />  
+                            <Label row="2" col="1" colspan="2" :text="formatPrice(product.price)"  class="h6" horizontalAlignment="left" margin="0,0,6,0" />  
                             <stacklayout row="3" col="1" colspan="2">
                                 <GridLayout columns="*, 50" rows="auto" >
                                     <!--

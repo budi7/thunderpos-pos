@@ -21,7 +21,7 @@
                     <label :text="'fa-shopping-cart' | fonticon" class="fa fa-2x h3" verticalAlignment="middle" margin="0, 24, 0, 0"/>
                     <StackLayout col="1" >
                         <Label :text="formatPrice(this.$store.getters.cartTotalPrice)" class="list-group-item-heading" margin="0"/>
-                        <Label :text="(this.$store.getters.cartItemsCount > 1) ? this.$store.getters.cartItemsCount + ' Items' : this.$store.getters.cartItemsCount + ' Item'" class="h6" margin="0"/>
+                        <Label :text="(this.$store.getters.cartItemsCount > 1) ? formatNumber(this.$store.getters.cartItemsCount) + ' Items' : this.$store.getters.cartItemsCount + ' Item'" class="h6" margin="0"/>
                     </StackLayout>
                     <Label :text="'fa-angle-right' | fonticon" class="fa fa-2x h3" col="2" margin="0" verticalAlignment="middle" />
                 </GridLayout>  
@@ -39,7 +39,7 @@
                                 <GridLayout columns="*, 66, 40" rows="auto" >
                                 -->
                                 <GridLayout columns="*, 68" rows="auto" >
-                                    <label row="0" col="0" verticalAlignment="center" horizontalAlignment="left" width="100%" class="text-primary fa" margin="0,21,0,0" :visibility="(product.cart.qty > 0 ? 'visible' : 'hidden')">{{ product.cart.qty }} in {{'fa-shopping-cart' | fonticon}}</label>
+                                    <label row="0" col="0" verticalAlignment="center" horizontalAlignment="left" width="100%" class="text-primary fa" margin="0,21,0,0" :visibility="(product.cart.qty > 0 ? 'visible' : 'hidden')">{{ formatNumber(product.cart.qty) }} in {{'fa-shopping-cart' | fonticon}}</label>
                                     <button row="0" col="1" v-if="(product.cart.qty > 0)" :id="product.info.upc" v-on:tap="addNotes" width="100%" class="btn-primary btn-sm text-center fa" >Notes  {{'fa-plus' | fonticon}}</button>
                                     <!--
                                     <label row="0" col="2" verticalAlignment="center" width="100%" class="text-muted text-right fa">Add {{'fa-plus' | fonticon}}</label>
