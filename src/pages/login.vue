@@ -48,6 +48,8 @@ export default {
             this.$router.push('pos')
             return
 
+
+
             if(this.page_config.is_mode_forgot_password){
                 resetPassword(this.page_data.email)
             }else{
