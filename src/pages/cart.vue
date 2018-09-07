@@ -14,7 +14,7 @@
                 </GridLayout>  
             </StackLayout>            
             <GridLayout  columns="*" rows="*">
-                <ListView class="list-group" for="product in products" padding="12,16,6,16" >
+                <ListView class="list-group" for="product in products | reverse" padding="12,16,6,16" >
                     <v-template >
                         <GridLayout columns="*">
                             <GridLayout @tap="showInfo" :id="product.upc" columns="auto, *, auto" rows="auto, auto, auto" padding="10,12,6,12" >

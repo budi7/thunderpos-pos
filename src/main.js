@@ -17,6 +17,9 @@ TNSFontIcon.loadCss();
 
 Vue.filter('fonticon', fonticon);
 
+// custom vue modules
+Vue.filter('reverse', function(value) { return value.slice().reverse() });
+
 
 var firebase = require("nativescript-plugin-firebase");
 
