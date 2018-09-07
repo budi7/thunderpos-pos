@@ -124,6 +124,9 @@
                 // })
             },
             checkout(){
+                setTimeout(() => {
+                    this.$router.back()
+                }, 4005);
                 this.$router.push('loader')
             },  
         },
