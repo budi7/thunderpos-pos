@@ -11,6 +11,10 @@ import Counter from '../components/Counter';
 import Cart from '../pages/cart';
 import Login from '../pages/login';
 import Pos from '../pages/pos';
+import Loader from '../pages/loader';
+
+// App settings
+var appSettings = require("application-settings");
 
 const router = new VueRouter({
   pageRouting: true,
@@ -23,10 +27,10 @@ const router = new VueRouter({
       },
     },
     {
-      path: '/hello',
-      component: HelloWorld,
+      path: '/loader',
+      component: Loader,
       meta: {
-        title: 'Hello World',
+        title: 'Loading',
       },
     },
     {
@@ -41,20 +45,20 @@ const router = new VueRouter({
       component: Pos,
       meta: {
         title: 'pos',
-      },
+      }, 
     },
     {
       path: '/cart',
       component: Cart,
       meta: {
-        title: 'cart',
+        title: 'Cart',
       },
     },    
     {
       path: '/login',
       component: Login,
       meta: {
-        title: 'login',
+        title: 'Login',
       },
     },        
     {path: '*', redirect: '/pos'},

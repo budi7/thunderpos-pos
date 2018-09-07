@@ -9,7 +9,7 @@ const getters = {
         return state.cart_items.find(cart_items => cart_items.upc === upc)
         // return state.cart_items[state.cart_items.findIndex(x => x.upc === upc)]
     },
-    cartItems(){
+    cartItems: () => {
         return state.cart_items
     },
     cartItemsCount(){
@@ -22,46 +22,81 @@ const getters = {
 
 const mutations = {
     cartItemAdd: (state, payload) => {
+        if(!payload.qty){console.log('cartItem payload qty not set, returning now'); return}
+        var prev_payload_qty = payload.qty
+
         // 1. update carts
-        console.log("--")
-        console.log(payload.upc)
         try{
             var idx = state.cart_items.findIndex(x => x.upc === payload.upc)
         }catch(ex){
-            console.log(state.cart_items)
-            console.log(state.cart_items)
-            console.log(ex)
+            console.log(ex);
         }
 
         if(idx < 0){ 
             // 1.a new data
-            console.log(1)
             state.cart_items.push(payload) 
         }else{
-            console.log(2)
             // 1.b update qty
-            state.cart_items[idx].qty++
+
+            // direct cast wont update the view, so code bellow wont works
+            // state.cart_items[idx].qty = parseInt(state.cart_items[idx].qty) + parseInt(payload.qty)
+
+            // use this instead
+            // https://vuejs.org/v2/guide/list.html#Caveats
+            payload.qty = parseInt(state.cart_items[idx].qty) + parseInt(payload.qty)
+            state.cart_items.splice(idx, 1, payload)
         }
  
-         // 2. update total price
-         state.cart_total_price = parseFloat(state.cart_total_price) + parseFloat(payload.price) 
+        // 2. update total price
+        state.cart_total_price = parseFloat(state.cart_total_price) + (parseFloat(payload.price) * parseInt(prev_payload_qty)) 
  
-         // 3. update total items
-         state.cart_total_item = parseInt(state.cart_total_item) + parseInt(payload.qty) 
+        // 3. update total items
+        state.cart_total_item = parseInt(state.cart_total_item) + parseInt(prev_payload_qty) 
     },
     cartItemRemove: (state, payload) => { 
-        // 1. update carts
-        // check if current qty none, remove the item
+        if(!payload.qty){console.log('cartItem payload qty not set, returning now');return}
+        var prev_payload_qty = payload.qty
 
-        // else, update qty only
+        // 1. update carts
+        try{
+            var idx = state.cart_items.findIndex(x => x.upc === payload.upc)
+        }catch(ex){
+            console.log(ex);
+        }
+
+        if(idx < 0){ 
+            // data not found
+            return
+        }else{
+            // update qty
+            
+            // direct cast wont update the view, so code bellow wont works
+            // state.cart_items[idx].qty = parseInt(state.cart_items[idx].qty) - parseInt(payload.qty)
+
+            // use this instead
+            // https://vuejs.org/v2/guide/list.html#Caveats
+            payload.qty = parseInt(state.cart_items[idx].qty) - parseInt(payload.qty)
+            state.cart_items.splice(idx, 1, payload)
+        }
+
+        // if current qty 0, then remove item
+        if(state.cart_items[idx].qty < 1){
+            if(state.cart_items.length > 1){
+                state.cart_items.splice(idx, 1);
+            }else{
+                state.cart_items = []
+            }
+        }
 
         // 2. update total price
-        state.cart_total_price = parseFloat(state.cart_total_price) - parseFloat(payload.price)
+        state.cart_total_price = parseFloat(state.cart_total_price) - (parseFloat(payload.price) * parseInt(prev_payload_qty))
 
         // 3. update total items
-        state.cart_total_item = parseInt(state.cart_total_item) - parseInt(payload.qty)
+        state.cart_total_item = parseInt(state.cart_total_item) - parseInt(prev_payload_qty)
     },
     cartItemEdit: (state, payload) => {
+        if(!payload.qty){payload.qty = 0}
+
         // 1. Get payload index on cart & validate
         var idx = state.cart_items.findIndex(x => x.upc === payload.upc)
         if(idx < 0){ return false }
@@ -79,13 +114,10 @@ const mutations = {
         // 3. edit selected cart item
         if(payload.qty > 0){
             // 3.a. edit
-            state.cart_items[idx] = payload
+            state.cart_items.splice(idx, 1, payload)
         }else{
             // 3.b. remove item from cart
             if(state.cart_items.length > 1){
-                console.log(payload.upc)
-                console.log(idx)
-                
                 state.cart_items.splice(idx, 1);
             }else{
                 state.cart_items = []

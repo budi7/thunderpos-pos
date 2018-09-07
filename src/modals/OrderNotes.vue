@@ -66,9 +66,6 @@ export default {
         },
 
         // cart
-        loadQty(args){
-            console.log(args.object.get('id'))
-        },
         addCartQty(){
             this.cart_qty++
         },

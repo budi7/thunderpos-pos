@@ -27,25 +27,30 @@
                 </GridLayout>  
             </StackLayout>
             <GridLayout  columns="*" rows="*">
-                <ListView :visibility="(isNoResult ? 'collapse' : 'visible')" class="list-group" for="product in searchResults" padding="12,16,9,16" >
+                <ListView :visibility="(isNoResult ? 'collapse' : 'visible')" class="list-group" for="product in searchResults" padding="12,16,6,16" >
                     <v-template >
-                        <GridLayout :id="product.info.upc" v-on:longPress="showInfo" v-on:tap="addToCart" columns="auto, *, auto" rows="auto, auto, auto, auto" padding="8,12,6,12" >
-                            <Image row="0" col="0" rowSpan="4" :src="product.info.imageSrc" width="62" height="62" verticalAlignment="top" margin="0,12,0,0"/>
-                            <Label row="0" col="1" colSpan="2" :text="product.info.name"  class="list-group-item-heading" verticalAlignment="top" textWrap="false" margin="0"/>
-                            <Label row="1" col="1" colspan="2" :text="'UPC : ' + (product.info.config.is_stock ? product.info.upc : '_')" class="h6"/>
-                            <Label row="2" col="1" colspan="2" :text="formatPrice(product.info.price)"  class="h6" horizontalAlignment="left" margin="0,0,3,0" />  
-                            <stacklayout row="3" col="1" colspan="2">
-                                <!--
-                                <GridLayout columns="*, 66, 40" rows="auto" >
-                                -->
-                                <GridLayout columns="*, 68" rows="auto" >
-                                    <label row="0" col="0" verticalAlignment="center" horizontalAlignment="left" width="100%" class="text-primary fa" margin="0,21,0,0" :visibility="(product.cart.qty > 0 ? 'visible' : 'hidden')">{{ formatNumber(product.cart.qty) }} in {{'fa-shopping-cart' | fonticon}}</label>
-                                    <button row="0" col="1" v-if="(product.cart.qty > 0)" :id="product.info.upc" v-on:tap="addNotes" width="100%" class="btn-primary btn-sm text-center fa" >Notes  {{'fa-plus' | fonticon}}</button>
+                        <GridLayout columns="*">
+                            <GridLayout :id="product.info.upc" v-on:longPress="showInfo" v-on:tap="addToCart" columns="auto, *, auto" rows="auto, auto, auto, auto" padding="10,12,6,12" width="100%">
+                                <Image row="0" col="0" rowSpan="4" :src="product.info.imageSrc" width="62" height="62" verticalAlignment="top" margin="0,12,0,0"/>
+                                <Label row="0" col="1" colSpan="2" :text="product.info.name"  class="list-group-item-heading" verticalAlignment="top" textWrap="false" margin="0"/>
+                                <Label row="1" col="1" colspan="2" :text="'UPC : ' + (product.info.config.is_stock ? product.info.upc : '_')" class="h6"/>
+                                <Label row="2" col="1" colspan="2" :text="formatPrice(product.info.price)"  class="h6" horizontalAlignment="left" margin="0,0,3,0" />  
+                                <stacklayout row="3" col="1" colspan="2">
                                     <!--
-                                    <label row="0" col="2" verticalAlignment="center" width="100%" class="text-muted text-right fa">Add {{'fa-plus' | fonticon}}</label>
+                                    <GridLayout columns="*, 66, 40" rows="auto" >
                                     -->
-                                </GridLayout>
-                            </stacklayout>
+                                    <GridLayout columns="*, 68" rows="auto" >
+                                        <label row="0" col="0" verticalAlignment="center" horizontalAlignment="left" width="100%" class="text-primary fa" margin="0,21,0,0" :visibility="(product.cart.qty > 0 ? 'visible' : 'hidden')">{{ formatNumber(product.cart.qty) }} in {{'fa-shopping-cart' | fonticon}}</label>
+                                        <button row="0" col="1" v-if="(product.cart.qty > 0)" :id="product.info.upc" v-on:tap="addNotes" width="100%" class="btn-primary btn-sm text-center fa" >Detail  {{'fa-angle-right' | fonticon}}</button>
+                                        <!--
+                                        <label row="0" col="2" verticalAlignment="center" width="100%" class="text-muted text-right fa">Add {{'fa-plus' | fonticon}}</label>
+                                        -->
+                                    </GridLayout>
+                                </stacklayout>
+                            </GridLayout>
+                            <!-- <AbsoluteLayout col="0" :v-if="(1==0)">
+                                <Image src="~/images/promo1.png" width="36" height="36" />
+                            </AbsoluteLayout>                                -->
                         </GridLayout>
                     </v-template>
                 </ListView>
@@ -89,6 +94,11 @@
                 this.products = products.data.map(function(x){ return {'info' : x, 'cart' : {'qty' : 0}} });
 
                 this.isLoading = false
+
+                // refresh cart
+                // hack
+                this.searchQuery ="b"
+                this.searchQuery =""
             },
 
             // actionbar
@@ -99,9 +109,9 @@
             // barcode
             scanDone(args){
                 if(args.value.barcodes.length > 0){
-                //breaker to delay
-                // console.log(args.value.barcodes[0].value)
-                console.log(args.value.barcodes)
+                    //breaker to delay
+                    // console.log(args.value.barcodes[0].value)
+                    console.log(args.value.barcodes)
                 }
             },
 
@@ -135,7 +145,7 @@
 
                 // update main data
                 selected_product.cart.qty++
-                // /this.products[args.object.get("id")].cart.qty++
+                // this.products[args.object.get("id")].cart.qty++
             },
             showInfo: function (args){
                 var selected_product = this.products[this.products.findIndex(x => x.info.upc === args.object.get("id"))]
@@ -209,7 +219,7 @@
             }
         },
         components: {
-        }
+        },
     };
 
 </script>
